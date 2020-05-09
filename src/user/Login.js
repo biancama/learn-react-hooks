@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
 
-const Login = ({ setUser }) => {
+const Login = ({ dispatch }) => {
     const [username, setUsername] = useState('')
     const handleUsername = (e) => setUsername(e.target.value)
     return (
-        <form onSubmit={e => {e.preventDefault(); setUser(username)} } >
+        <form onSubmit={e => {e.preventDefault(); dispatch({type: 'LOGIN', username}) }} >
             <label htmlFor="login-username">Username:</label>
             <input type="text" id="login-username" value={username} onChange={handleUsername}/>
             <label htmlFor="login-password">Password:</label>

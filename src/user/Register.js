@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
-const Register = ({ setUser }) => {
+const Register = ({ dispatch }) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
 
     return (
-        <form onSubmit={e => {e.preventDefault(); setUser(username)}}>
+        <form onSubmit={e => {e.preventDefault(); dispatch({type: 'LOGIN', username})  }}>
           <label htmlFor="register-username">Username:</label>
           <input type="text" name="register-username" id="register-username" value={username} onChange={e => setUsername(e.target.value)}/>
           <label htmlFor="register-password">Password:</label>

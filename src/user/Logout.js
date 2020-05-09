@@ -1,8 +1,8 @@
 import React from 'react'
 
-const logout = ({user, setUser}) => {
+const logout = ({user, dispatch}) => {
     return (
-        <form onSubmit={e => {e.preventDefault(); setUser('')}} >
+        <form onSubmit={e => {e.preventDefault(); dispatch({type: 'LOGOUT'}) }} >
             Logged is as: <b>{user}</b>
             <input type="submit" value="Logut" />
         </form>
