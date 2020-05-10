@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-
-const Register = ({ dispatch }) => {
+import React, { useState, useContext } from 'react'
+import { StateContext } from '../context'
+const Register = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const {dispatch} = useContext(StateContext) 
 
     return (
         <form onSubmit={e => {e.preventDefault(); dispatch({type: 'LOGIN', username})  }}>

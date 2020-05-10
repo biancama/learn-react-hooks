@@ -10,7 +10,7 @@ const userReducer = (state, action) => {
     }
   }
 
-  const postsReducers = (state, action) => {
+  const postsReducer = (state, action) => {
     switch (action.type) {
       case 'CREATE_POST':
         const newPost = {title: action.title, author: action.author, content: action.content}
@@ -25,7 +25,7 @@ const userReducer = (state, action) => {
   const appReducer = (state, action) => {
     return {
         user: userReducer(state.user, action),
-        posts: postsReducers(state.posts, action)
+        posts: postsReducer(state.posts, action)
     }
   }
 
