@@ -1,4 +1,4 @@
-import React, {useState, useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import UserBar from './user/userBar'
 import CreatePost from './post/CreatePost'
 import PostList from './post/PostList'
@@ -14,6 +14,13 @@ function App() {
   const [state , dispatch ] = useReducer(appReducers, {user: '', posts: defaultPosts})
   const { user, posts } = state
   
+  useEffect(() =>{
+    if (user) {
+      document.title = `${user} - React hooks Blog`
+    } else {
+      document.title = `React hooks Blog`
+    }
+  }, [user])
   return (
     <React.Fragment>       
       <UserBar user={user} dispatch={dispatch} />
