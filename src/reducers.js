@@ -15,7 +15,8 @@ const userReducer = (state, action) => {
       case 'CREATE_POST':
         const newPost = {title: action.title, author: action.author, content: action.content}
         return [newPost, ...state]
-      
+      case 'FETCH_POSTS':
+        return action.posts
         default:
             return state
         }

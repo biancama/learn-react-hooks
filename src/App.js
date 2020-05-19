@@ -9,13 +9,8 @@ import ChangeTheme  from './changeTheme'
 
 
 function App() {
-  const defaultPosts = [
-    {title: 'React Hook', author: 'Massimo', content: 'this is a test 01'},
-    {title: 'the meaining of the world', author: 'Pippo Baudo', content: 'this is a test 04'},
-  ];
-
   
-  const [state , dispatch ] = useReducer(appReducers, {user: '', posts: defaultPosts})
+  const [state , dispatch ] = useReducer(appReducers, {user: '', posts: []})
   const { user } = state
   const [theme, setTheme] = useState({ 
     primaryColor: 'deepskyblue', 
@@ -29,6 +24,12 @@ function App() {
       document.title = `React hooks Blog`
     }
   }, [user])
+
+  useEffect(() =>{
+    fetch('/api/posts')
+    .then(result => result.json())
+    .then(posts => dispatch({ type: 'FETCH_POSTS', posts}))
+  }, [])
   return (
     <StateContext.Provider value={{state, dispatch}}>
       <ThemeContext.Provider value={theme}>
