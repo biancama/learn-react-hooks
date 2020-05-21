@@ -6,12 +6,12 @@ import appReducers from './reducers'
 import Header from './Header'
 import { ThemeContext, StateContext } from './context'
 import ChangeTheme  from './changeTheme'
-
+import { useResource } from 'react-request-hook'
 
 function App() {
   
   const [state , dispatch ] = useReducer(appReducers, {user: '', posts: []})
-  const { user } = state
+  const { user, error } = state
   const [theme, setTheme] = useState({ 
     primaryColor: 'deepskyblue', 
     secondaryColor: 'coral'
@@ -25,11 +25,23 @@ function App() {
     }
   }, [user])
 
-  useEffect(() =>{
-    fetch('/api/posts')
-    .then(result => result.json())
-    .then(posts => dispatch({ type: 'FETCH_POSTS', posts}))
-  }, [])
+  const [posts, getPosts] =  useResource(() => ({
+    url: '/posts',
+    method: 'get'
+  }))
+
+  useEffect(getPosts, [])
+  
+
+  useEffect(() => {
+    if (posts && posts.error) {
+      dispatch({type: 'POSTS_ERROR'})
+    }
+    if (posts && posts.data) {
+      dispatch({type: 'FETCH_POSTS', posts: posts.data.reverse()})
+    }
+  }, [posts])
+
   return (
     <StateContext.Provider value={{state, dispatch}}>
       <ThemeContext.Provider value={theme}>
@@ -41,7 +53,8 @@ function App() {
         <br />
       { user && <CreatePost /> }
         <br />
-        <br />                
+        <br />   
+        {error && <b>{error}</b>}             
         <PostList />
             
       </div>
