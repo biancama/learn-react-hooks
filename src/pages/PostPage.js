@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useResource } from 'react-request-hook'
 import { Link } from 'react-navi'
 import Post from '../post/Post'
+import FooterBar from './FooterBar'
 
 export default function PostPage ({ id }) {
 
@@ -19,6 +20,7 @@ export default function PostPage ({ id }) {
                 : 'Loading...'
             }
             <hr />
+            <FooterBar />
         </div>
     )
 }

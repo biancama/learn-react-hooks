@@ -1,22 +1,30 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useResource } from 'react-request-hook'
 import {StateContext} from '../context'
+import { useNavigation } from 'react-navi'
 
 export default function CreatePost () {
+    const navigation = useNavigation()
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const { state, dispatch} = useContext(StateContext)
     const { user } = state 
-    const [, createPost] = useResource(({title, content, author}) => ({
+    const [post , createPost] = useResource(({title, content, author}) => ({
         url: '/posts',
         method: 'POST',
         data: {title, content, author}
     }))
     
+useEffect(() => {
+    if (post && post.data) {
+        dispatch({type: 'CREATE_POST', ...post.data})   
+        navigation.navigate(`/view/${post.data.id}`) 
+    }    
+}, [post])
+
     const handleCreatePost = (e) => {
         e.preventDefault()
         createPost({title, author: user, content})
-        dispatch({type: 'CREATE_POST', title, author: user, content})
     }
     return (
         <form onSubmit={handleCreatePost} >
