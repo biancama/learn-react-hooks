@@ -13,7 +13,7 @@ const userReducer = (state, action) => {
   const postsReducer = (state, action) => {
     switch (action.type) {
       case 'CREATE_POST':
-        const newPost = {title: action.title, author: action.author, content: action.content}
+        const newPost = {title: action.title, author: action.author, content: action.content, id: action.id};
         return [newPost, ...state]
       case 'FETCH_POSTS':
         return action.posts

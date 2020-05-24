@@ -1,15 +1,22 @@
 import React, { useReducer, useEffect, useState } from 'react';
-import UserBar from './user/userBar'
-import CreatePost from './post/CreatePost'
-import PostList from './post/PostList'
 import appReducers from './reducers'
-import Header from './Header'
 import { ThemeContext, StateContext } from './context'
-import ChangeTheme  from './changeTheme'
-import { useResource } from 'react-request-hook'
+import HeaderBar from './pages/HeaderBar'
+import HomePage from './pages/HomePage'
+import PostPage from './pages/PostPage'
+import { Router, View } from 'react-navi'
+import { mount, route } from 'navi'
+
 
 function App() {
   
+  const routes = mount ({
+    '/': route({ view: <HomePage />}),
+    '/view/:id': route(req => {
+      return { view: <PostPage id={req.params.id} />} 
+    })
+  })
+
   const [state , dispatch ] = useReducer(appReducers, {user: '', posts: []})
   const { user, error } = state
   const [theme, setTheme] = useState({ 
@@ -25,41 +32,19 @@ function App() {
     }
   }, [user])
 
-  const [posts, getPosts] =  useResource(() => ({
-    url: '/posts',
-    method: 'get'
-  }))
-
-  useEffect(getPosts, [])
-  
-
-  useEffect(() => {
-    if (posts && posts.error) {
-      dispatch({type: 'POSTS_ERROR'})
-    }
-    if (posts && posts.data) {
-      dispatch({type: 'FETCH_POSTS', posts: posts.data.reverse()})
-    }
-  }, [posts])
-
+ 
   return (
     <StateContext.Provider value={{state, dispatch}}>
       <ThemeContext.Provider value={theme}>
-      <div style={{ padding: 8}}>     
-        <Header text='React Hooks Blog' />
-        <ChangeTheme theme={theme} setTheme={setTheme} />
-        <br />
-        <React.Suspense fallback={"Loading..."}>
-          <UserBar />
-        </React.Suspense>
-        <br />
-      { user && <CreatePost /> }
-        <br />
-        <br />   
-        {error && <b>{error}</b>}             
-        <PostList />
-            
-      </div>
+        <Router routes ={routes} >
+          <div style={{ padding: 8}}>     
+            <HeaderBar setTheme={setTheme} />
+            <br />
+            <br />   
+            <View />
+                
+          </div>
+      </Router>
       </ThemeContext.Provider>
     </StateContext.Provider>
 

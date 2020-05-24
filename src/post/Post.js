@@ -1,13 +1,26 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from '../context'
+import { Link } from 'react-navi'
 
-function Post ({ title, content, author }) {
-    console.log('rendering Post')
+function Post ({ id, title, content, author, short = false }) {
+    let processedContent = content
+    if (short) {
+        if (content.length > 30) {
+            processedContent = content.slice(0,30 + '...')
+        }
+    }
+
     const { secondaryColor } = useContext(ThemeContext)
     return (
         <div>
             <h3 style={{color: secondaryColor}}>{title}</h3>
-            <div>{content}</div>
+            <div>{processedContent}</div>
+            {short && 
+                <div>
+                    <br />
+                    <Link href={`/view/${id}`}>View full post</Link>
+                </div>            
+            }
             < br />
             <i>Written by <b>{author}</b></i>
         </div>
